@@ -32,9 +32,9 @@ with open(config_file, "r+") as f:
         args += line.strip() + " "
 
 if len(sys.argv) > 3 and sys.argv[3] == "test":
-    run_command = f"python ../code/test_slurm.py {args} --saving_path {directory}/res/"
+    run_command = f"python ./code/test_slurm.py {args} --saving_path {directory}/res/"
 else:
-    run_command = f"python ../code/run_train.py {args} --saving_path {directory}/res/"
+    run_command = f"python ./code/run_train.py {args} --saving_path {directory}/res/"
 
 slurm_script = f"""#!/bin/bash
 
