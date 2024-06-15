@@ -1,7 +1,7 @@
 import argparse
 
 def get_runtime_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
 
     parser.add_argument("--random_seed", type=int, default=1234)
     parser.add_argument(
