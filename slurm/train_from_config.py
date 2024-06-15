@@ -15,9 +15,10 @@ if time_h > 23:
 else:
     time_h = f"{time_h:02d}:00:00"
 
-job_name = f"{config_file.split('.')[0]}_{job_id}"
+config_file_name = config_file.split('/')[-1]
+job_name = f"{config_file_name.split('.')[0]}_{job_id}"
 
-directory = f"~/job_outputs/{job_name}/"
+directory = f"~/job_outputs/{job_name}"
 os.system(f"mkdir -p {directory}/res/")
 
 slurm_script = f"""
