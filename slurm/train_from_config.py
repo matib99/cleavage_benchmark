@@ -6,8 +6,6 @@ import os
 from pathlib import Path
 
 
-
-
 alphabet = string.ascii_lowercase + string.digits
 
 job_id = ''.join(random.choices(alphabet, k=8))
@@ -33,6 +31,11 @@ with open(config_file, "r+") as f:
     for line in f:
         args += line.strip() + " "
 
+if len(sys.argv) > 3 and sys.argv[3] == "test":
+    run_command = f"python ../code/test_slurm.py {args} --saving_path {directory}/res/"
+else:
+    run_command = f"python ../code/run_train.py {args} --saving_path {directory}/res/"
+
 slurm_script = f"""#!/bin/bash
 
 #SBATCH --job-name={job_name}
@@ -47,7 +50,7 @@ source ~/.bashrc
 conda init
 conda activate cleavage_benchmark
 
-python ./code/test_slurm.py {args} --saving_path {directory}/res/
+{run_command}
 """
 # script_file = Path(f"{directory}/run.sh")
 # script_file.touch(exist_ok=True) 
@@ -56,5 +59,3 @@ with open(f"{run_sh_path}", "w+") as f:
     f.write(slurm_script)
 os.system(f"chmod +x {run_sh_path}")
 os.system(f"sbatch {run_sh_path}")
-
-# python ../code/run_train.py @{config_file} --saving_path {directory}/res/
