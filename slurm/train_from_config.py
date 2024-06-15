@@ -3,6 +3,10 @@ import string
 import sys
 import os
 
+from pathlib import Path
+
+
+
 
 alphabet = string.ascii_lowercase + string.digits
 
@@ -37,9 +41,10 @@ conda activate cleavage_benchmark
 
 python ../code/test_slurm.py @{config_file} --saving_path {directory}/res/
 """
-
+script_file = Path(f"{directory}/run.sh")
+script_file.touch(exist_ok=True) 
 # run bash script
-with open(f"{directory}/run.sh", "w+") as f:
+with open(script_file, "w+") as f:
     f.write(slurm_script)
 os.system(f"chmod +x {directory}/run.sh")
 os.system(f"sbatch {directory}/run.sh")
