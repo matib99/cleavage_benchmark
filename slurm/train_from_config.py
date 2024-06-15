@@ -39,7 +39,7 @@ python ../code/test_slurm.py @{config_file} --saving_path {directory}/res/
 """
 
 # run bash script
-with open(f"{directory}/run.sh", "w") as f:
+with open(f"{directory}/run.sh", "w+") as f:
     f.write(slurm_script)
 os.system(f"chmod +x {directory}/run.sh")
 os.system(f"sbatch {directory}/run.sh")
