@@ -31,11 +31,8 @@ slurm_script = f"""
 #SBATCH --output={directory}/out.txt
 #SBATCH --error={directory}/err.txt
 
-module purge
-module load miniconda
-
 source ~/.bashrc
-conda activate icsp
+conda activate cleavage_benchmark
 
 python ../code/test_slurm.py @{config_file} --saving_path {directory}/res/
 """
