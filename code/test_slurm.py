@@ -13,3 +13,8 @@ for arg in vars(args):
 
 with open(f"{args.saving_path}/test.txt", "w+") as f:
     f.write("Hello, World!")
+
+import numpy as np
+
+x = np.random.rand(10, 10)
+print(x)

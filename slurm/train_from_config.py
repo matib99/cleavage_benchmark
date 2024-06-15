@@ -46,7 +46,7 @@ slurm_script = f"""#!/bin/bash
 #SBATCH --output={directory}/out.txt
 #SBATCH --error={directory}/err.txt
 
-source ~/.bashrc
+source {os.path.expanduser('~/miniconda3/etc/profile.d/conda.sh')}
 conda init
 conda activate cleavage_benchmark
 
