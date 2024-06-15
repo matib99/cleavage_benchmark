@@ -4,3 +4,4 @@ mhc1_cleavages_nc_ranks.csv
 uniref_3M.vec
 playground.ipynb
 __pycache__/
+data/benchmark/
