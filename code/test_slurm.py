@@ -11,6 +11,5 @@ print("Arguments:")
 for arg in vars(args):
     print(f"{arg}:      {getattr(args, arg)}")
 
-f = open(f"{args.saving_path}/test.txt", "w")
-f.write("Hello, World!")
-f.close()
+with open(f"{args.saving_path}/test.txt", "w+") as f:
+    f.write("Hello, World!")

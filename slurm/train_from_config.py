@@ -28,6 +28,11 @@ os.system(f"mkdir -p {directory}/res/")
 run_sh_path = f"{directory}/run.sh"
 os.system(f"touch {run_sh_path}")
 
+args = ""
+with open(config_file, "r+") as f:
+    for line in f:
+        args += line.strip() + " "
+
 slurm_script = f"""#!/bin/bash
 
 #SBATCH --job-name={job_name}
@@ -42,7 +47,7 @@ source ~/.bashrc
 conda init
 conda activate cleavage_benchmark
 
-python ./code/test_slurm.py @{config_file} --saving_path {directory}/res/
+python ./code/test_slurm.py {args} --saving_path {directory}/res/
 """
 # script_file = Path(f"{directory}/run.sh")
 # script_file.touch(exist_ok=True) 
