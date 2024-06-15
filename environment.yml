@@ -28,7 +28,7 @@ dependencies:
       - sentencepiece==0.1.96
       - spacy-legacy==3.0.9
       - spacy-loggers==1.0.2
-      - torchdata==0.3.0a0+1546ecf
+      - torchdata==0.3.0
       - torchsummary==1.5.1
       - tqdm==4.64.1
       - transformers==4.15.0
