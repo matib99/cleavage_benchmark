@@ -8,7 +8,7 @@ alphabet = string.ascii_lowercase + string.digits
 
 job_id = ''.join(random.choices(alphabet, k=8))
 config_file = sys.argv[1]
-time_h = sys.argv[2] if len(sys.argv) > 2 else 24
+time_h = int(sys.argv[2]) if len(sys.argv) > 2 else 24
 
 if time_h > 23:
     time_h = f"{time_h // 24}-{(time_h % 24):02d}:00:00"
