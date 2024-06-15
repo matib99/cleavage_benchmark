@@ -28,8 +28,7 @@ os.system(f"mkdir -p {directory}/res/")
 run_sh_path = f"{directory}/run.sh"
 os.system(f"touch {run_sh_path}")
 
-slurm_script = f"""
-#!/bin/bash
+slurm_script = f"""#!/bin/bash
 
 #SBATCH --job-name={job_name}
 #SBATCH --partition=common
