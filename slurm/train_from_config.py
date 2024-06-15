@@ -11,7 +11,7 @@ from pathlib import Path
 alphabet = string.ascii_lowercase + string.digits
 
 job_id = ''.join(random.choices(alphabet, k=8))
-config_file = sys.argv[1]
+config_file = os.path.expanduser(sys.argv[1])
 time_h = int(sys.argv[2]) if len(sys.argv) > 2 else 24
 
 if time_h > 23:
