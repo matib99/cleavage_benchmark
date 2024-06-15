@@ -22,8 +22,11 @@ else:
 config_file_name = config_file.split('/')[-1]
 job_name = f"{config_file_name.split('.')[0]}_{job_id}"
 
-directory = f"~/job_outputs/{job_name}"
+directory = os.path.expanduser(f"~/job_outputs/{job_name}")
 os.system(f"mkdir -p {directory}/res/")
+
+run_sh_path = f"{directory}/run.sh"
+os.system(f"touch {run_sh_path}")
 
 slurm_script = f"""
 #!/bin/bash
@@ -41,12 +44,12 @@ conda activate cleavage_benchmark
 
 python ../code/test_slurm.py @{config_file} --saving_path {directory}/res/
 """
-script_file = Path(f"{directory}/run.sh")
-script_file.touch(exist_ok=True) 
+# script_file = Path(f"{directory}/run.sh")
+# script_file.touch(exist_ok=True) 
 # run bash script
-with open(script_file, "w+") as f:
+with open(f"{run_sh_path}", "w+") as f:
     f.write(slurm_script)
-os.system(f"chmod +x {directory}/run.sh")
-os.system(f"sbatch {directory}/run.sh")
+os.system(f"chmod +x {run_sh_path}")
+os.system(f"sbatch {run_sh_path}")
 
 # python ../code/run_train.py @{config_file} --saving_path {directory}/res/
