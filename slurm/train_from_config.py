@@ -39,9 +39,10 @@ slurm_script = f"""#!/bin/bash
 #SBATCH --error={directory}/err.txt
 
 source ~/.bashrc
+conda init
 conda activate cleavage_benchmark
 
-python ../code/test_slurm.py @{config_file} --saving_path {directory}/res/
+python ./code/test_slurm.py @{config_file} --saving_path {directory}/res/
 """
 # script_file = Path(f"{directory}/run.sh")
 # script_file.touch(exist_ok=True) 
