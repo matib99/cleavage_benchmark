@@ -68,13 +68,13 @@ if not os.path.exists(model_path):
     print(f"created directory path {logging_path}")
 
 if not "Prot2Vec" in args.model_name:
-    train_data = read_data(f"../data/{args.terminus}_{args.train_split}.csv")
-    val_data = read_data(f"../data/{args.terminus}_{args.val_split}.csv")
-    test_data = read_data(f"../data/{args.terminus}_{args.test_split}.csv")
+    train_data = read_data(f"./data/{args.terminus}_{args.train_split}.csv")
+    val_data = read_data(f"./data/{args.terminus}_{args.val_split}.csv")
+    test_data = read_data(f"./data/{args.terminus}_{args.test_split}.csv")
 else:
-    train_data = read_data_3mer(f"../data/{args.terminus}_{args.train_split}_3mer.tsv")
-    val_data = read_data_3mer(f"../data/{args.terminus}_{args.val_split}_3mer.tsv")
-    test_data = read_data_3mer(f"../data/{args.terminus}_{args.test_split}_3mer.tsv")
+    train_data = read_data_3mer(f"./data/{args.terminus}_{args.train_split}_3mer.tsv")
+    val_data = read_data_3mer(f"./data/{args.terminus}_{args.val_split}_3mer.tsv")
+    test_data = read_data_3mer(f"./data/{args.terminus}_{args.test_split}_3mer.tsv")
 
 if args.model_type == "Padded":
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -83,8 +83,8 @@ if args.model_type == "Padded":
 if "bbpe1" in args.model_name:
     model_to_load = BiLSTMPadded
     optim_to_load = optim.Adam
-    bbpe1_vocab = f"../params/{args.terminus}_bbpe1k-vocab.json"
-    bbpe1_merges = f"../params/{args.terminus}_bbpe1k-merges.txt"
+    bbpe1_vocab = f"./params/{args.terminus}_bbpe1k-vocab.json"
+    bbpe1_merges = f"./params/{args.terminus}_bbpe1k-merges.txt"
     tokenizer = ByteLevelBPETokenizer.from_file(
         bbpe1_vocab, bbpe1_merges, lowercase=False
     )
@@ -118,8 +118,8 @@ if "bbpe1" in args.model_name:
 elif "bbpe50" in args.model_name:
     model_to_load = BiLSTMPadded
     optim_to_load = optim.Adam
-    bbpe50_vocab = f"../params/{args.terminus}_bbpe50k-vocab.json"
-    bbpe50_merges = f"../params/{args.terminus}_bbpe50k-merges.txt"
+    bbpe50_vocab = f"./params/{args.terminus}_bbpe50k-vocab.json"
+    bbpe50_merges = f"./params/{args.terminus}_bbpe50k-merges.txt"
     tokenizer = ByteLevelBPETokenizer.from_file(
         bbpe50_vocab, bbpe50_merges, lowercase=False
     )
@@ -153,7 +153,7 @@ elif "bbpe50" in args.model_name:
 elif "wp50" in args.model_name:
     model_to_load = BiLSTMPadded
     optim_to_load = optim.Adam
-    wp50_vocab = f"../params/{args.terminus}_wp50k-vocab.txt"
+    wp50_vocab = f"./params/{args.terminus}_wp50k-vocab.txt"
     tokenizer = BertWordPieceTokenizer.from_file(wp50_vocab, lowercase=False)
     tokenizer.enable_padding(
         pad_id=args.pad_idx, pad_token="[PAD]"
@@ -246,7 +246,7 @@ elif "T5" in args.model_name:
 elif "Prot2Vec" in args.model_name:
     model_to_load = BiLSTMProt2Vec
     optim_to_load = optim.Adam
-    vocab, embeddings = read_embeddings("../params/uniref_3M.vec")
+    vocab, embeddings = read_embeddings("./params/uniref_3M.vec")
     tokenizer = lambda seq: [vocab.get(s, 0) for s in seq.split()]  # k-mer sequences
 
     loader = CleavageLoader(
@@ -270,7 +270,7 @@ elif "Prot2Vec" in args.model_name:
     }
 
 else:
-    vocab = torch.load("../params/vocab.pt")
+    vocab = torch.load("./params/vocab.pt")
     tokenizer = lambda x: vocab(list(x))
 
     if "CNN" in args.model_name:
