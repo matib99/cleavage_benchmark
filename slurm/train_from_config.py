@@ -36,6 +36,8 @@ if len(sys.argv) > 3 and sys.argv[3] == "test":
 else:
     run_command = f"python ./code/run_train.py {args} --saving_path {directory}/res/"
 
+print(f"JOB ID: {job_name}")
+
 slurm_script = f"""#!/bin/bash
 
 #SBATCH --job-name={job_name}
