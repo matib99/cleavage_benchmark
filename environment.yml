@@ -15,8 +15,7 @@ dependencies:
   - scikit-learn
   - scipy=1.7.3
   - seaborn=0.12.0
-  # - tokenizers=0.10.3
-  - tokenizers
+  - tokenizers=0.10.3
   - torchtext=0.12.0
   - pip:
       - fair-esm==1.0.0
