@@ -6,22 +6,22 @@ from full_seq_dataloader import load_sequence_dataset
 from tqdm import tqdm
 import numpy as np
 
-sys.path.append('../')
+sys.path.append('./code/')
 from models import BiLSTM
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}")
 
 
-dataset_path = '../data/benchmark/lt2_windows__cvs_gt2.csv'
+dataset_path = './data/benchmark/lt2_windows__cvs_gt2.csv'
 
-model_c_json_path = '../code/run_jsons/c_bilstm.json'
-model_n_json_path = '../code/run_jsons/n_bilstm.json'
+model_c_json_path = './code/run_jsons/c_bilstm.json'
+model_n_json_path = './code/run_jsons/n_bilstm.json'
 
-model_c_params = '../params/models/c_BiLSTM.pt'
-model_n_params = '../params/models/n_BiLSTM.pt'
+model_c_params = './params/models/c_BiLSTM.pt'
+model_n_params = './params/models/n_BiLSTM.pt'
 
-results_path = '~/cleavage_benchmark/data/benchmark/preds/'
+results_path = '/home/matib99/cleavage_benchmark/data/benchmark/preds/'
 os.system(f"mkdir -p {results_path}")
 
 print("Loading dataset and model json configs")
@@ -30,6 +30,11 @@ dataset = load_sequence_dataset(dataset_path)
 
 model_c_json = json.load(open(model_c_json_path))
 model_n_json = json.load(open(model_n_json_path))
+
+if 'batch_norm' not in model_c_json:
+    model_c_json['batch_norm'] = False
+if 'batch_norm' not in model_n_json:
+    model_n_json['batch_norm'] = False
 
 vocab = torch.load("./params/vocab.pt").to(DEVICE)
 
@@ -84,3 +89,4 @@ for data in tqdm(dataset):
 print("Saving predictions")
 np.save(f'{results_path}/c_bilstm.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
 np.save(f'{results_path}/n_bilstm.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
+np.save(f'{results_path}/n_bilstm.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
