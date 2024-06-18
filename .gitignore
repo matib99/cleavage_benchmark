@@ -5,3 +5,4 @@ uniref_3M.vec
 playground.ipynb
 __pycache__/
 data/benchmark/
+code/full_sequences_benchmark/metrics*.py
