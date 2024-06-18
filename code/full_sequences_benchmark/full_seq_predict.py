@@ -80,7 +80,7 @@ c_preds_list = []
 
 for data in tqdm(dataset):
     windows, _, _, clvs = data
-    windows = torch.tensor([vocab.encode(w) for w in windows]).to(DEVICE)
+    windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
     n_preds = model_n(windows)
     c_preds = model_c(windows)
     n_preds_list.append(n_preds.detach().cpu().numpy())
