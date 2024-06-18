@@ -8,7 +8,7 @@
 #SBATCH --output=/home/matib99/job_outputs/full_seq/out.txt
 #SBATCH --error=/home/matib99/job_outputs/full_seq/err.txt
 
-source {os.path.expanduser('~/miniconda3/etc/profile.d/conda.sh')}
+source /home/matib99/miniconda3/etc/profile.d/conda.sh
 conda init
 conda activate cleavage_benchmark
 
