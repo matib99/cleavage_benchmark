@@ -13,7 +13,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}")
 
 
-dataset_path = './data/benchmark/lt2_windows__cvs_gt2.csv'
+# dataset_path = './data/benchmark/lt2_windows__cvs_gt2.csv'
+dataset_path = './data/benchmark/multiple_windows.csv'
 
 model_c_json_path = './code/run_jsons/c_bilstm.json'
 model_n_json_path = './code/run_jsons/n_bilstm.json'
@@ -87,5 +88,5 @@ for data in tqdm(dataset):
     c_preds_list.append(c_preds.detach().cpu().numpy())
 
 print("Saving predictions")
-np.save(f'{results_path}/c_bilstm.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
-np.save(f'{results_path}/n_bilstm.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
+np.save(f'{results_path}/c_bilstm_mw.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
+np.save(f'{results_path}/n_bilstm_mw.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
