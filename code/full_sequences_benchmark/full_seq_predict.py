@@ -125,8 +125,12 @@ for data in tqdm(dataset):
     c_preds_full = []
     for i in range(0, len(seq), 32):
         batch_seq = seq[i:i + 32].to(DEVICE)
+
         with torch.no_grad():
-            c_preds_full.append(model_c(batch_seq).cpu())
+            res = model_c(batch_seq).cpu()
+            if res.dim() == 0:
+                res = res.unsqueeze(0)
+            c_preds_full.append(res)
         del batch_seq
 
     # c_preds = model_c(seq)
