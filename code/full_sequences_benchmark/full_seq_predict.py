@@ -25,8 +25,8 @@ dataset_path = './data/benchmark/lt2_windows__cvs_gt2.csv'
 model_c_json_path = './code/run_jsons/c_esm2.json'
 model_n_json_path = './code/run_jsons/n_esm2.json'
 
-model_c_params = './params/models/c_esm2.pt'
-model_n_params = './params/models/n_esm2.pt'
+model_c_params = './params/models/c_ESM2.pt'
+model_n_params = './params/models/n_ESM2.pt'
 
 results_path = '/home/matib99/cleavage_benchmark/data/benchmark/preds/'
 os.system(f"mkdir -p {results_path}")
