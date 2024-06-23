@@ -45,7 +45,7 @@ if 'batch_norm' not in model_n_json:
 
 # vocab = torch.load("./params/vocab.pt").to(DEVICE)
 esm2, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
-tokenizer = vocab.get_batch_converter()
+tokenizer = vocab.get_batch_converter().to(DEVICE)
 
 # model_c_conf = {
 #     "vocab_size": len(vocab),
