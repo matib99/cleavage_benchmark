@@ -116,14 +116,15 @@ for data in tqdm(dataset):
     lbl, _, seq = tokenizer(batch)
     seq = seq.to(DEVICE)
     seq = seq.long()
+    print(f"seq shape: {seq.shape}")
 
     # windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
     # windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
     # n_preds = model_n(windows)
 
     c_preds_full = []
-    for i in range(0, len(seq), 64):
-        c_preds_full.append(model_c(seq[i:i + 64]))
+    for i in range(0, len(seq), 32):
+        c_preds_full.append(model_c(seq[i:i + 32]).cpu())
 
     # c_preds = model_c(seq)
     c_preds = torch.cat(c_preds_full, dim=0)
