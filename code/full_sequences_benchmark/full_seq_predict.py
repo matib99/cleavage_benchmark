@@ -111,7 +111,7 @@ c_preds_list = []
 
 for data in tqdm(dataset):
     windows, n_lbl, c_lbl, clvs = data
-
+    print(f"windows: {len(windows)}, {len(windows[0])}")
     batch = [(c_l, w) for c_l, w in zip(c_lbl, windows)]
     lbl, _, seq = tokenizer(batch)
     seq = seq.to(DEVICE)
