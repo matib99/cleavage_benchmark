@@ -110,11 +110,14 @@ print("Predicting")
 c_preds_list = []
 
 for data in tqdm(dataset):
-    windows, _, _, clvs = data
-    windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
+    windows, n_lbl, c_lbl, clvs = data
+    batch = [(c_l, w) for c_l, w in zip(c_lbl, windows)]
+    lbl, _, seq = tokenizer(batch)
+
+    # windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
     # windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
     # n_preds = model_n(windows)
-    c_preds = model_c(windows)
+    c_preds = model_c(seq.long())
     # n_preds_list.append(n_preds.detach().cpu().numpy())
     c_preds_list.append(c_preds.detach().cpu().numpy())
 
