@@ -114,7 +114,7 @@ for data in tqdm(dataset):
     print(f"windows: {len(windows)}, {len(windows[0])}")
     batch = [(c_l, w) for c_l, w in zip(c_lbl, windows)]
     lbl, _, seq = tokenizer(batch)
-    seq = seq.to(DEVICE)
+    # seq = seq.to(DEVICE)
     seq = seq.long()
     print(f"seq shape: {seq.shape}")
 
@@ -124,7 +124,9 @@ for data in tqdm(dataset):
 
     c_preds_full = []
     for i in range(0, len(seq), 32):
-        c_preds_full.append(model_c(seq[i:i + 32]).cpu())
+        batch_seq = seq[i:i + 32].to(DEVICE)
+        c_preds_full.append(model_c(batch_seq).cpu())
+        del batch_seq
 
     # c_preds = model_c(seq)
     c_preds = torch.cat(c_preds_full, dim=0)
