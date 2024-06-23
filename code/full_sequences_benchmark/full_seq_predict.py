@@ -75,17 +75,17 @@ tokenizer = vocab.get_batch_converter()
 #     # "batch_norm": model_n_json['batch_norm'],
 # }
 
-model_c_conf = {
-    "pretrained_model": esm2,
-    "dropout": model_c_json['dropout'],
-    "out_neurons": model_c_json['out_neurons'],
-}
-
-# model_n_conf = {
+# model_c_conf = {
 #     "pretrained_model": esm2,
-#     "dropout": model_n_json['dropout'],
-#     "out_neurons": model_n_json['out_neurons'],
+#     "dropout": model_c_json['dropout'],
+#     "out_neurons": model_c_json['out_neurons'],
 # }
+
+model_n_conf = {
+    "pretrained_model": esm2,
+    "dropout": model_n_json['dropout'],
+    "out_neurons": model_n_json['out_neurons'],
+}
 
 print("Loading models")
 
@@ -95,49 +95,49 @@ print("Loading models")
 # model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
 # model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
 
-model_c = ESM2(**model_c_conf).to(DEVICE)
-# model_n = ESM2(**model_n_conf).to(DEVICE)
+# model_c = ESM2(**model_c_conf).to(DEVICE)
+model_n = ESM2(**model_n_conf).to(DEVICE)
 
-model_c.load_state_dict(torch.load(model_c_params))
-# model_n.load_state_dict(torch.load(model_n_params))
+# model_c.load_state_dict(torch.load(model_c_params))
+model_n.load_state_dict(torch.load(model_n_params))
 
-model_c.eval()
-# model_n.eval()
+# model_c.eval()
+model_n.eval()
 
 print("Predicting")
 
-# n_preds_list = []
-c_preds_list = []
+n_preds_list = []
+# c_preds_list = []
 
 for data in tqdm(dataset):
     windows, n_lbl, c_lbl, clvs = data
-    print(f"windows: {len(windows)}, {len(windows[0])}")
-    batch = [(c_l, w) for c_l, w in zip(c_lbl, windows)]
+    # print(f"windows: {len(windows)}, {len(windows[0])}")
+    batch = [(n_l, w) for n_l, w in zip(n_lbl, windows)]
     lbl, _, seq = tokenizer(batch)
     # seq = seq.to(DEVICE)
     seq = seq.long()
-    print(f"seq shape: {seq.shape}")
+    # print(f"seq shape: {seq.shape}")
 
     # windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
     # windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
     # n_preds = model_n(windows)
 
-    c_preds_full = []
+    n_preds_full = []
     for i in range(0, len(seq), 32):
         batch_seq = seq[i:i + 32].to(DEVICE)
 
         with torch.no_grad():
-            res = model_c(batch_seq).cpu()
+            res = model_n(batch_seq).cpu()
             if res.dim() == 0:
                 res = res.unsqueeze(0)
-            c_preds_full.append(res)
+            n_preds_full.append(res)
         del batch_seq
 
     # c_preds = model_c(seq)
-    c_preds = torch.cat(c_preds_full, dim=0)
+    n_preds = torch.cat(n_preds_full, dim=0)
     # n_preds_list.append(n_preds.detach().cpu().numpy())
-    c_preds_list.append(c_preds.detach().cpu().numpy())
+    n_preds_list.append(n_preds.detach().cpu().numpy())
 
 print("Saving predictions")
-np.save(f'{results_path}/c_esm2.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
+np.save(f'{results_path}/n_esm2.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
 # np.save(f'{results_path}/n_esm2.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
