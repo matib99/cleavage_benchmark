@@ -6,3 +6,4 @@ playground.ipynb
 __pycache__/
 data/benchmark/
 code/full_sequences_benchmark/metrics*.py
+params/
