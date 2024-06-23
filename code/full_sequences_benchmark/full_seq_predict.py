@@ -45,6 +45,7 @@ if 'batch_norm' not in model_n_json:
 
 # vocab = torch.load("./params/vocab.pt").to(DEVICE)
 esm2, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
+tokenizer = vocab.get_batch_converter()
 
 # model_c_conf = {
 #     "vocab_size": len(vocab),
@@ -110,7 +111,8 @@ c_preds_list = []
 
 for data in tqdm(dataset):
     windows, _, _, clvs = data
-    windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
+    windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
+    # windows = torch.tensor([vocab(list(w)) for w in windows]).to(DEVICE)
     # n_preds = model_n(windows)
     c_preds = model_c(windows)
     # n_preds_list.append(n_preds.detach().cpu().numpy())
