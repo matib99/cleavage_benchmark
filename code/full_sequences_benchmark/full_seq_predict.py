@@ -7,7 +7,7 @@ from tqdm import tqdm
 import numpy as np
 
 sys.path.append('./code/')
-from models import BiLSTM, BiLSTMAttention
+from models import BiLSTM, BiLSTMAttention, ESM2
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}")
@@ -94,8 +94,8 @@ print("Loading models")
 # model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
 # model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
 
-model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
-# model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
+model_c = ESM2(**model_c_conf).to(DEVICE)
+# model_n = ESM2(**model_n_conf).to(DEVICE)
 
 model_c.load_state_dict(torch.load(model_c_params))
 # model_n.load_state_dict(torch.load(model_n_params))
