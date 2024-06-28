@@ -68,9 +68,9 @@ if not os.path.exists(model_path):
     print(f"created directory path {logging_path}")
 
 if not "Prot2Vec" in args.model_name:
-    train_data = read_data(f"./data/{args.terminus}_{args.train_split}.csv")
-    val_data = read_data(f"./data/{args.terminus}_{args.val_split}.csv")
-    test_data = read_data(f"./data/{args.terminus}_{args.test_split}.csv")
+    train_data = read_data(f"./data/mhc/{args.terminus}_{args.train_split}.csv")
+    val_data = read_data(f"./data/mhc/{args.terminus}_{args.val_split}.csv")
+    test_data = read_data(f"./data/mhc/{args.terminus}_{args.test_split}.csv")
 else:
     train_data = read_data_3mer(f"./data/{args.terminus}_{args.train_split}_3mer.tsv")
     val_data = read_data_3mer(f"./data/{args.terminus}_{args.val_split}_3mer.tsv")
