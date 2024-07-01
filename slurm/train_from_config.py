@@ -8,7 +8,10 @@ from pathlib import Path
 
 alphabet = string.ascii_lowercase + string.digits
 
-job_id = ''.join(random.choices(alphabet, k=8))
+if len(sys.argv) > 3 and sys.argv[3] != "test":
+    job_id = sys.argv[1]
+else:
+    job_id = ''.join(random.choices(alphabet, k=8))
 config_file = os.path.expanduser(sys.argv[1])
 time_h = int(sys.argv[2]) if len(sys.argv) > 2 else 24
 
