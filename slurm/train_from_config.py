@@ -9,7 +9,7 @@ from pathlib import Path
 alphabet = string.ascii_lowercase + string.digits
 
 if len(sys.argv) > 3 and sys.argv[3] != "test":
-    job_id = sys.argv[1]
+    job_id = sys.argv[3]
 else:
     job_id = ''.join(random.choices(alphabet, k=8))
 config_file = os.path.expanduser(sys.argv[1])
