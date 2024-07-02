@@ -63,7 +63,7 @@ model_c_conf = {
     "hidden_size": model_c_json['linear_size1'],
     "dropout": model_c_json['dropout'],
     "out_neurons": model_c_json['out_neurons'],
-    "num_heads": model_c_json['num_heads1'],
+    # "num_heads": model_c_json['num_heads1'],
     "seq_len": model_c_json['seq_len'],
     "batch_norm": model_c_json['batch_norm'],
 }
@@ -77,7 +77,7 @@ model_n_conf = {
     "hidden_size": model_n_json['linear_size1'],
     "dropout": model_n_json['dropout'],
     "out_neurons": model_n_json['out_neurons'],
-    "num_heads": model_n_json['num_heads1'],
+    # "num_heads": model_n_json['num_heads1'],
     "seq_len": model_n_json['seq_len'],
     "batch_norm": model_n_json['batch_norm'],
 }
