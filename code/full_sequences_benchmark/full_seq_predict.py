@@ -57,7 +57,7 @@ vocab = torch.load("./params/vocab.pt").to(DEVICE)
 model_c_conf = {
     "vocab_size": len(vocab),
     "embedding_dim": model_c_json['embedding_dim'],
-    "rnn_size": model_c_json['rnn_size1'],
+    # "rnn_size": model_c_json['rnn_size1'],
     "rnn_size1": model_c_json['rnn_size1'],
     "rnn_size2": model_c_json['rnn_size2'],
     "hidden_size": model_c_json['linear_size1'],
@@ -71,7 +71,7 @@ model_c_conf = {
 model_n_conf = {
     "vocab_size": len(vocab),
     "embedding_dim": model_n_json['embedding_dim'],
-    "rnn_size": model_n_json['rnn_size1'],
+    # "rnn_size": model_n_json['rnn_size1'],
     "rnn_size1": model_n_json['rnn_size1'],
     "rnn_size2": model_n_json['rnn_size2'],
     "hidden_size": model_n_json['linear_size1'],
