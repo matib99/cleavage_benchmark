@@ -64,7 +64,7 @@ model_c_conf = {
     "dropout": model_c_json['dropout'],
     "out_neurons": model_c_json['out_neurons'],
     "num_heads": model_c_json['num_heads1'],
-    "seq_len": model_c_json['seq_len'],
+    # "seq_len": model_c_json['seq_len'], # bilstm
     "batch_norm": model_c_json['batch_norm'],
 }
 
@@ -78,7 +78,7 @@ model_n_conf = {
     "dropout": model_n_json['dropout'],
     "out_neurons": model_n_json['out_neurons'],
     "num_heads": model_n_json['num_heads1'], # bilstm_att
-    "seq_len": model_n_json['seq_len'],
+    # "seq_len": model_n_json['seq_len'], # bilstm
     "batch_norm": model_n_json['batch_norm'],
 }
 
