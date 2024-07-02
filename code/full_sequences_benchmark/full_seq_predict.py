@@ -149,4 +149,4 @@ for data in tqdm(dataset):
 
 print("Saving predictions")
 np.save(f'{results_path}/n_bilstm.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
-np.save(f'{results_path}/n_bilstm.npy', np.array(n_preds_list, dtype=object), allow_pickle=True)
+np.save(f'{results_path}/c_bilstm.npy', np.array(c_preds_list, dtype=object), allow_pickle=True)
