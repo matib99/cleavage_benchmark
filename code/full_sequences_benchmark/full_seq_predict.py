@@ -122,7 +122,7 @@ for data in tqdm(dataset):
     # batch = [(n_l, w) for n_l, w in zip(n_lbl, windows)]
     # lbl, _, seq = tokenizer(batch)
     # seq = seq.to(DEVICE)
-    seq = seq.long()
+    # seq = seq.long()
     # print(f"seq shape: {seq.shape}")
 
     # windows = torch.tensor([tokenizer(w) for w in windows]).to(DEVICE)
