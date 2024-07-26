@@ -19,15 +19,15 @@ dataset_path = './data/benchmark/full_test.csv'
 
 # model_c_json_path = './code/run_jsons/c_bilstm.json'
 # model_n_json_path = './code/run_jsons/n_bilstm.json'
-
-# model_c_params = './params/models/c_BiLSTM.pt'
-# model_n_params = './params/models/n_BiLSTM.pt'
+# 
+# model_c_params = './params/models/their_data/c_bilstm.pt'
+# model_n_params = './params/models/their_data/n_bilstm.pt'
 
 model_c_json_path = './code/run_jsons/c_bilstm_att.json'
 model_n_json_path = './code/run_jsons/n_bilstm_att.json'
 
-model_c_params = './params/models/c_BiLSTM_att.pt'
-model_n_params = './params/models/n_BiLSTM_att.pt'
+model_c_params = './params/models/their_data/c_bilstm_att.pt'
+model_n_params = './params/models/their_data/n_bilstm_att.pt'
 
 # model_c_json_path = './code/run_jsons/c_esm2.json'
 # model_n_json_path = './code/run_jsons/n_esm2.json'
@@ -35,7 +35,7 @@ model_n_params = './params/models/n_BiLSTM_att.pt'
 # model_c_params = './params/models/c_ESM2.pt'
 # model_n_params = './params/models/n_ESM2.pt'
 
-results_path = '/home/matib99/cleavage_benchmark/data/benchmark/preds/'
+results_path = '/home/matib99/cleavage_benchmark/data/benchmark/preds_their'
 os.system(f"mkdir -p {results_path}")
 
 print("Loading dataset and model json configs")
