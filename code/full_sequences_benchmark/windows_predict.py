@@ -18,11 +18,11 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}")
 
 # model_name = "bilstm"
-model_name = "bilstm_att"
-# model_name = "esm2"
+# model_name = "bilstm_att"
+model_name = "esm2"
 
-# train_data_type = "their"
-train_data_type = "my"
+train_data_type = "their"
+# train_data_type = "my"
 
 
 c_test_dataset_path = './data/c_test.csv'
@@ -31,8 +31,8 @@ n_test_dataset_path = './data/n_test.csv'
 model_c_json_path = f'./code/run_jsons/c_{model_name}.json'
 model_n_json_path = f'./code/run_jsons/n_{model_name}.json'
 
-model_c_params = f'./params/models/{train_data_type}_data/c_{model_name}.pt'
-model_n_params = f'./params/models/{train_data_type}_data/n_{model_name}.pt'
+# model_c_params = f'./params/models/{train_data_type}_data/c_{model_name}.pt'
+# model_n_params = f'./params/models/{train_data_type}_data/n_{model_name}.pt'
 
 # model_c_json_path = './code/run_jsons/c_bilstm_att.json'
 # model_n_json_path = './code/run_jsons/n_bilstm_att.json'
@@ -43,10 +43,10 @@ model_n_params = f'./params/models/{train_data_type}_data/n_{model_name}.pt'
 # model_c_json_path = './code/run_jsons/c_esm2.json'
 # model_n_json_path = './code/run_jsons/n_esm2.json'
 
-# model_c_params = './params/models/c_ESM2.pt'
-# model_n_params = './params/models/n_ESM2.pt'
+model_c_params = './params/models/c_ESM2.pt'
+model_n_params = './params/models/n_ESM2.pt'
 
-results_path = '/home/matib99/cleavage_benchmark/data/benchmark/windows_{train_data_type}'
+results_path = f'/home/matib99/cleavage_benchmark/data/benchmark/windows_{train_data_type}'
 os.system(f"mkdir -p {results_path}")
 
 print("Loading dataset and model json configs")
@@ -63,12 +63,13 @@ if 'batch_norm' not in model_c_json:
 if 'batch_norm' not in model_n_json:
     model_n_json['batch_norm'] = False
 
-vocab = torch.load("./params/vocab.pt").to(DEVICE)
-# esm2, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
-# tokenizer = vocab.get_batch_converter()
+# vocab = torch.load("./params/vocab.pt").to(DEVICE)
+# tokenizer = lambda x: vocab(list(x))
+
+esm2, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
+tokenizer = vocab.get_batch_converter()
 
 
-tokenizer = lambda x: vocab(list(x))
 
 c_loader = CleavageLoader(
     c_test_data,
@@ -88,13 +89,23 @@ n_loader = CleavageLoader(
     num_workers=4,
 )
 
+
+# _, _, c_test_loader = c_loader.load(
+#     "BiLSTM", nad=False, unk_idx=0
+# )  # unk_idx should be 0
+# 
+# 
+# _, _, n_test_loader = n_loader.load(
+#     "BiLSTM", nad=False, unk_idx=0
+# )  # unk_idx should be 0
+
 _, _, c_test_loader = c_loader.load(
-    "BiLSTM", nad=False, unk_idx=0
+    "ESM2", nad=False, unk_idx=0
 )  # unk_idx should be 0
 
 
 _, _, n_test_loader = n_loader.load(
-    "BiLSTM", nad=False, unk_idx=0
+    "ESM2", nad=False, unk_idx=0
 )  # unk_idx should be 0
 
 # BiLSTM
@@ -125,48 +136,48 @@ _, _, n_test_loader = n_loader.load(
 
 # BiLSTMAttention
 
+# model_c_conf = {
+#     "vocab_size": len(vocab),
+#     "embedding_dim": model_c_json['embedding_dim'],
+#     "rnn_size": model_c_json['rnn_size1'],
+#     "hidden_size": model_c_json['linear_size1'],
+#     "dropout": model_c_json['dropout'],
+#     "out_neurons": model_c_json['out_neurons'],
+#     "num_heads": model_c_json['num_heads1'],
+# }
+# 
+# model_n_conf = {
+#     "vocab_size": len(vocab),
+#     "embedding_dim": model_n_json['embedding_dim'],
+#     "rnn_size": model_n_json['rnn_size1'], # bilstm_att
+#     "hidden_size": model_n_json['linear_size1'],
+#     "dropout": model_n_json['dropout'],
+#     "out_neurons": model_n_json['out_neurons'],
+#     "num_heads": model_n_json['num_heads1'], # bilstm_att
+# }
+
 model_c_conf = {
-    "vocab_size": len(vocab),
-    "embedding_dim": model_c_json['embedding_dim'],
-    "rnn_size": model_c_json['rnn_size1'],
-    "hidden_size": model_c_json['linear_size1'],
+    "pretrained_model": esm2,
     "dropout": model_c_json['dropout'],
     "out_neurons": model_c_json['out_neurons'],
-    "num_heads": model_c_json['num_heads1'],
 }
 
 model_n_conf = {
-    "vocab_size": len(vocab),
-    "embedding_dim": model_n_json['embedding_dim'],
-    "rnn_size": model_n_json['rnn_size1'], # bilstm_att
-    "hidden_size": model_n_json['linear_size1'],
-    "dropout": model_n_json['dropout'],
-    "out_neurons": model_n_json['out_neurons'],
-    "num_heads": model_n_json['num_heads1'], # bilstm_att
+   "pretrained_model": esm2,
+   "dropout": model_n_json['dropout'],
+   "out_neurons": model_n_json['out_neurons'],
 }
-
-# model_c_conf = {
-#     "pretrained_model": esm2,
-#     "dropout": model_c_json['dropout'],
-#     "out_neurons": model_c_json['out_neurons'],
-# }
-
-# model_n_conf = {
-#    "pretrained_model": esm2,
-#    "dropout": model_n_json['dropout'],
-#    "out_neurons": model_n_json['out_neurons'],
-# }
 
 print("Loading models")
 ###
 # model_c = BiLSTM(**model_c_conf).to(DEVICE)
 # model_n = BiLSTM(**model_n_conf).to(DEVICE)
 
-model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
-model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
+# model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
+# model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
 
-# model_c = ESM2(**model_c_conf).to(DEVICE)
-# model_n = ESM2(**model_n_conf).to(DEVICE)
+model_c = ESM2(**model_c_conf).to(DEVICE)
+model_n = ESM2(**model_n_conf).to(DEVICE)
 
 model_c.load_state_dict(torch.load(model_c_params))
 model_n.load_state_dict(torch.load(model_n_params))
