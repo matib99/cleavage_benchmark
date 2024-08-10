@@ -17,8 +17,8 @@ from processors import train_or_eval_base
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device: {DEVICE}")
 
-model_name = "bilstm"
-# model_name = "bilstm_att"
+# model_name = "bilstm"
+model_name = "bilstm_att"
 # model_name = "esm2"
 
 # train_data_type = "their"
@@ -97,32 +97,52 @@ _, _, n_test_loader = n_loader.load(
     "BiLSTM", nad=False, unk_idx=0
 )  # unk_idx should be 0
 
+# BiLSTM
+
+# model_c_conf = {
+#     "vocab_size": len(vocab),
+#     "embedding_dim": model_c_json['embedding_dim'],
+#     "rnn_size1": model_c_json['rnn_size1'],
+#     "rnn_size2": model_c_json['rnn_size2'],
+#     "hidden_size": model_c_json['linear_size1'],
+#     "dropout": model_c_json['dropout'],
+#     "out_neurons": model_c_json['out_neurons'],
+#     "seq_len": model_c_json['seq_len'], # bilstm
+#     "batch_norm": model_c_json['batch_norm'], # bilstm
+# }
+
+# model_n_conf = {
+#     "vocab_size": len(vocab),
+#     "embedding_dim": model_n_json['embedding_dim'],
+#     "rnn_size1": model_n_json['rnn_size1'], # bilstm
+#     "rnn_size2": model_n_json['rnn_size2'], # bilstm
+#     "hidden_size": model_n_json['linear_size1'],
+#     "dropout": model_n_json['dropout'],
+#     "out_neurons": model_n_json['out_neurons'],
+#     "seq_len": model_n_json['seq_len'], # bilstm
+#     "batch_norm": model_n_json['batch_norm'], # bilstm
+# }
+
+# BiLSTMAttention
+
 model_c_conf = {
     "vocab_size": len(vocab),
     "embedding_dim": model_c_json['embedding_dim'],
-    # "rnn_size": model_c_json['rnn_size1'],
-    "rnn_size1": model_c_json['rnn_size1'],
-    "rnn_size2": model_c_json['rnn_size2'],
+    "rnn_size": model_c_json['rnn_size1'],
     "hidden_size": model_c_json['linear_size1'],
     "dropout": model_c_json['dropout'],
     "out_neurons": model_c_json['out_neurons'],
-    # "num_heads": model_c_json['num_heads1'],
-    "seq_len": model_c_json['seq_len'], # bilstm
-    "batch_norm": model_c_json['batch_norm'], # bilstm
+    "num_heads": model_c_json['num_heads1'],
 }
 
 model_n_conf = {
     "vocab_size": len(vocab),
     "embedding_dim": model_n_json['embedding_dim'],
-    # "rnn_size": model_n_json['rnn_size1'], # bilstm_att
-    "rnn_size1": model_n_json['rnn_size1'], # bilstm
-    "rnn_size2": model_n_json['rnn_size2'], # bilstm
+    "rnn_size": model_n_json['rnn_size1'], # bilstm_att
     "hidden_size": model_n_json['linear_size1'],
     "dropout": model_n_json['dropout'],
     "out_neurons": model_n_json['out_neurons'],
-    # "num_heads": model_n_json['num_heads1'], # bilstm_att
-    "seq_len": model_n_json['seq_len'], # bilstm
-    "batch_norm": model_n_json['batch_norm'], # bilstm
+    "num_heads": model_n_json['num_heads1'], # bilstm_att
 }
 
 # model_c_conf = {
@@ -139,11 +159,11 @@ model_n_conf = {
 
 print("Loading models")
 ###
-model_c = BiLSTM(**model_c_conf).to(DEVICE)
-model_n = BiLSTM(**model_n_conf).to(DEVICE)
+# model_c = BiLSTM(**model_c_conf).to(DEVICE)
+# model_n = BiLSTM(**model_n_conf).to(DEVICE)
 
-# model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
-# model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
+model_c = BiLSTMAttention(**model_c_conf).to(DEVICE)
+model_n = BiLSTMAttention(**model_n_conf).to(DEVICE)
 
 # model_c = ESM2(**model_c_conf).to(DEVICE)
 # model_n = ESM2(**model_n_conf).to(DEVICE)
