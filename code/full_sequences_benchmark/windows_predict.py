@@ -66,7 +66,8 @@ if 'batch_norm' not in model_n_json:
 # vocab = torch.load("./params/vocab.pt").to(DEVICE)
 # tokenizer = lambda x: vocab(list(x))
 
-esm2, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
+esm2_c, vocab = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
+esm2_n, _ = torch.hub.load("facebookresearch/esm:main", "esm2_t30_150M_UR50D")
 tokenizer = vocab.get_batch_converter()
 
 
@@ -157,13 +158,13 @@ _, _, n_test_loader = n_loader.load(
 # }
 
 model_c_conf = {
-    "pretrained_model": esm2,
+    "pretrained_model": esm2_c,
     "dropout": model_c_json['dropout'],
     "out_neurons": model_c_json['out_neurons'],
 }
 
 model_n_conf = {
-   "pretrained_model": esm2,
+   "pretrained_model": esm2_n,
    "dropout": model_n_json['dropout'],
    "out_neurons": model_n_json['out_neurons'],
 }
