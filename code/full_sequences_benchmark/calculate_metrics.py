@@ -19,8 +19,8 @@ dataset_path = './data/benchmark/full_test.csv'
 # dataset_path = '../../data/benchmark/multiple_windows.csv'
 
 
-n_preds_path = './data/benchmark/preds_their/n_bilstm.npy'
-c_preds_path = './data/benchmark/preds_their/c_bilstm.npy'
+n_preds_path = './data/benchmark/preds_my/n_bilstm.npy'
+c_preds_path = './data/benchmark/preds_my/c_bilstm.npy'
 # n_preds_path = '../../data/benchmark/preds/n_bilstm_att.npy'
 # c_preds_path = '../../data/benchmark/preds/c_bilstm_att.npy'
 # n_preds_path = '../../data/benchmark/preds/n_bilstm.npy'
@@ -59,6 +59,8 @@ def sigmoid(x):
 # %%
 n_preds = [sigmoid(pred) for pred in n_preds]
 c_preds = [sigmoid(pred) for pred in c_preds]
+
+
 
 # %%
 c_preds_concat = np.concatenate(c_preds)
@@ -146,6 +148,41 @@ for c_pred, c_target in zip(c_preds, c_targets):
     c_pos_quantiles.extend(normalized_ranks[positive_indices])
 
 
+def sanity_check_cn(id):
+    print(f"SANITY CHECK {id}")
+    true_n = [n-1 for n, c in cleavages[id]]
+    true_c = [c for n, c in cleavages[id]]
+    print("N terminus")
+    print(f"True: {true_n}")
+    n_rank = np.argsort(-n_preds[id]).argsort()
+    n_sorted_ids = np.argsort(-n_preds[id])
+    print(f"True ranks: {n_rank[true_n]}")
+    print(f"True probs: {n_preds[id][true_n]}")
+    print(f"Top preds: ")
+    for i in range(20):
+        ii = n_sorted_ids[i]
+        print(f"{ii} - {n_preds[id][ii]} {'*' if ii in true_n else ''}")
+    print()
+    print("C terminus")
+    print(f"True: {true_c}")
+    c_rank = np.argsort(-c_preds[id]).argsort()
+    c_sorted_ids = np.argsort(-c_preds[id])
+    print(f"True ranks: {c_rank[true_c]}")
+    print(f"True probs: {c_preds[id][true_c]}")
+    print(f"Top preds: ")
+    for i in range(20):
+        ii = c_sorted_ids[i]
+        print(f"{ii} - {c_preds[id][ii]} {'*' if ii in true_c else ''}")
+    print()
+
+for i in range(4, 10):
+    sanity_check_cn(i)
+    
+
+    # ranks of the true ns
+
+
+
 # plot histograms
 fig, ax = plt.subplots(1, 2, figsize=(12, 6))
 ax[0].hist(n_pos_quantiles, bins=50)
@@ -181,6 +218,27 @@ def get_epitopes(n_pred, c_pred, min_epitope_len=4, max_epitope_len=16, threshol
 
     return epitopes, probs
 
+## SANITY CHECK
+def sanity_check(id, max_eps=30):
+    s_ep, s_pr = get_epitopes(n_preds[id], c_preds[id])
+    t_eps = cleavages[id]
+    t_starts = [n for n, _ in t_eps]
+    t_ends = [c for _, c in t_eps]
+    print("SANITY CHECK")
+    print("Predicted epitopes:")
+    for ep, pr in zip(s_ep[:max_eps], s_pr[:max_eps]):
+        s = ep[0] in t_starts
+        e = ep[1] in t_ends
+        print(f"{(100*pr):.2f}% -- {ep} {'*' if s else '-'}{'*' if e else '-'}")
+    print("True epitopes:")
+    for ep in t_eps:
+        rank = s_ep.index(ep) if ep in s_ep else None
+        prob = 0 if rank is None else s_pr[rank]
+        print(f"{ep} Rank: {'-' if rank is None else rank} ({'-' if prob is None else (100*prob):.2f}%)")
+    print("")
+
+for i in range(4, 10):
+    sanity_check(i)
 # %%
 def calculate_at_K_metrics(n_preds, c_preds, cleavages, Ks=[1, 2, 3, 5, 10]):
     metrics = {
