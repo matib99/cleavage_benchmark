@@ -21,8 +21,8 @@ model_name = "bilstm"
 # model_name = "bilstm_att"
 # model_name = "esm2"
 
-train_data_type = "their"
-# train_data_type = "my"
+# train_data_type = "their"
+train_data_type = "my"
 
 
 c_test_dataset_path = './data/c_test.csv'
@@ -46,7 +46,7 @@ model_n_params = f'./params/models/{train_data_type}_data/n_{model_name}.pt'
 # model_c_params = './params/models/c_ESM2.pt'
 # model_n_params = './params/models/n_ESM2.pt'
 
-results_path = '/home/matib99/cleavage_benchmark/data/benchmark/windows_their'
+results_path = '/home/matib99/cleavage_benchmark/data/benchmark/windows_{train_data_type}'
 os.system(f"mkdir -p {results_path}")
 
 print("Loading dataset and model json configs")
