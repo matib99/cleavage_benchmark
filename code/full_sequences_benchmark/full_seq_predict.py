@@ -181,7 +181,7 @@ for data in tqdm(dataset):
             res = model_c(batch_seq).cpu()
             if res.dim() == 0:
                 res = res.unsqueeze(0)
-            n_preds_full.append(res)
+            c_preds_full.append(res)
         del batch_seq
 
 
